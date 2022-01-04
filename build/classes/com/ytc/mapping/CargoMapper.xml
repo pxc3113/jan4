@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ytc.dec29.mapper.BookMapper">
+  <resultMap id="BaseResultMap" type="com.ytc.dec29.model.Book">
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="bookName" property="name" jdbcType="VARCHAR" />
+    <result column="bookPrice" property="price" jdbcType="VARCHAR" />
+    <result column="bookShow" property="show" jdbcType="VARCHAR" />
+    <result column="bookUp" property="bookUp" jdbcType="VARCHAR" />
+    <association property="bookType" javaType="com.ytc.dec29.model.BookType">
+      <id column="typeId" property="id" jdbcType="INTEGER" />
+      <result column="typeName" property="name" jdbcType="VARCHAR" />
+    </association>
+    <association property="user" javaType="com.ytc.dec29.model.User">
+      <id column="userId" property="id" jdbcType="INTEGER" />
+      <result column="userName" property="name" jdbcType="VARCHAR" />
+    </association>
+  </resultMap>
+
+    <sql id="whereSql">
+        <if test="cargo.name!='' and cargo.name!=null">
+            and s_name like '%${cargo.name}%'
+        </if>
+        <if test="cargo.status!=-1">
+            and s_status like '%${cargo.status}%'
+        </if>
+    </sql>
+
+  <select id="getAll" resultMap="BaseResultMap">
+    select * from t_tuoyuninfo where 1=1
+    <include refid="whereSql"></include>
+  </select>
+
+  <update id="update">
+    update t_book set bookUp = #{bookUp} where id = #{id}
+  </update>
+</mapper>
